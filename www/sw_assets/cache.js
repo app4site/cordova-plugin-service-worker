@@ -65,9 +65,32 @@ Cache.prototype.addAll = function(requests) {
 
 Cache.prototype.put = function(request, response) {
   var cacheName = this.name;
+  
   return new Promise(function(resolve, reject) {
-    // Call the native put function.
-    cachePut(cacheName, request, response.toDict(), resolve, reject);
+    if (response) {
+      response.blob()
+        .then(function(blob) {
+          var reader = new FileReader();
+          reader.onload = function(event) {
+            var base64Data = event.target.result;
+            base64Data = base64Data.substr(base64Data.indexOf(',') + 1);
+            
+            const responseObj = {
+              url: response.url,
+              body: base64Data,
+              status: response.status,
+              headers: response.headers
+            };
+            
+            // Call the native put function.
+            cachePut(cacheName, request, responseObj, resolve, reject);
+          };
+          reader.readAsDataURL(blob);
+        })
+        .catch(function(err) {
+          console.log("Error reading blob");
+        });
+    }
   });
 };
 
