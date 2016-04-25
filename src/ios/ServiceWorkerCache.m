@@ -38,9 +38,17 @@
         }
         return path;
     }
+    
+    // Don't allow URLs like http://www.google.com (as opposed to http://www.google.com/) as they crash the plugin
+    NSString *path = [absoluteURL path];
+    if ([path isEqualToString:@""]) {
+        path = @"/";
+    }
+    
     urlWithoutQuery = [[NSURL alloc] initWithScheme:[[absoluteURL scheme] lowercaseString]
                                                host:[[absoluteURL host] lowercaseString]
-                                               path:[absoluteURL path]];
+                                               path:path];
+    
     return [urlWithoutQuery absoluteString];
 }
 
