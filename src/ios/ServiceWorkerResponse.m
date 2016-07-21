@@ -42,7 +42,7 @@
     NSString *body = [jvalue[@"body"] toString];
     NSData *decodedBody = [[NSData alloc] initWithBase64EncodedString:body options:0];
     NSNumber *status = [jvalue[@"status"] toNumber];
-    NSDictionary *headers = [jvalue[@"headers"][@"headerDict"] toDictionary];
+    NSDictionary *headers = [jvalue[@"headers"][@"map"] toDictionary];
     return [[ServiceWorkerResponse alloc] initWithUrl:url body:decodedBody status:status headers:headers];
 }
 
