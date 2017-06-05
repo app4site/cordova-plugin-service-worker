@@ -179,3 +179,5 @@ CacheStorage.prototype.keys = function() {
 };
 
 var caches = new CacheStorage();
+
+module.exports = caches;

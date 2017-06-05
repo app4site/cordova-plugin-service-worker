@@ -131,6 +131,10 @@ CDVServiceWorker *singletonInstance = nil; // TODO: Something better
     [self.viewController.view addSubview:self.workerWebView];
     [self.workerWebView setDelegate:self];
     [self.workerWebView loadHTMLString:@"<html><title>Service Worker Page</title></html>" baseURL:[NSURL fileURLWithPath:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"www/GeneratedWorker.html"]]];
+    
+    // Add the cache helper functions to the page too so that we can use window.caches methods
+    JSContext *pageContext = [self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    [self.cacheApi defineFunctionsInContext:pageContext];
 }
 
 # pragma mark ServiceWorker Functions
