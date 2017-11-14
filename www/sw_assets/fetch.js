@@ -58,7 +58,7 @@ FetchEvent.prototype.default = function(ev) {
   'use strict';
 
   if (self.fetch) {
-    return
+    console.log('Force enable polyfill!')
   }
 
   var support = {
